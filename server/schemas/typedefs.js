@@ -1,57 +1,48 @@
 const { gql } = require('apollo-server-express');
 
-// const bookSchema = new Schema({
-//     authors: [
-//       {
-//         type: String,
-//       },
-//     ],
-//     description: {
-//       type: String,
-//       required: true,
-//     },
-//     // saved book id from GoogleBooks
-//     bookId: {
-//       type: String,
-//       required: true,
-//     },
-//     image: {
-//       type: String,
-//     },
-//     link: {
-//       type: String,
-//     },
-//     title: {
-//       type: String,
-//       required: true,
-//     },
-//   });
-
 const typeDefs = gql`
-    type Thought {
+# define types === refer to the models
+# one type == one model
+    type Book {
         _id: ID
-        thoughtText: String
-        thoughtAuthor: String
-        createdAt: String
-        comments: [Comment]!
+        authors: [String]
+        description: String!
+        bookId: String!
+        image: String
+        link: String
+        title: String!
     }
 
-    type Comment {
+    input BookInput {
         _id: ID
-        commentText: String
-        createdAt: String
+        authors: [String]
+        description: String!
+        bookId: String!
+        image: String
+        link: String
+        title: String!
     }
 
+    type User {
+        _id: ID
+        username: String!
+        email: String!
+        savedBooks: [Book]
+    }
+
+# initialize queries
     type Query {
-        thoughts: [Thought]!
-        thought(thoughtId: ID!): Thought
+        # pass in an 'id' for this query to get back the user
+        # user can bring back ==> _id, username, email, savedBooks
+        me(id: String, username: String): User
     }
 
     type Mutation {
-        addThought(thoughtText: String!, thoughtAuthor: String!): Thought
-        addComment(thoughtId: ID!, commentText: String!): Thought
-        removeThought(thoughtId: ID!): Thought
-        removeComment(thoughtId: ID!, commentId: ID!): Thought
+        # from user controllers
+        createUser(username: String!, email: String!, password: String!): User
+        login(email: String!, password: String!): User
+        saveBook(userId: String!, bookData: BookInput!): User
+        removeBook(userId: String!, bookId: String!): User
     }
 `;
 

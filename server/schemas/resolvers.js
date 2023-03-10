@@ -2,12 +2,20 @@ const { Thought } = require('../models');
 
 const resolvers = {
     Query: {
-        thoughts: async () => {
-            return Thought.find().sort({ createdAt: -1 });
-        },
+        me: async (parent, { id, username }) => {
+            // find a user that matches the id
+            const foundUser = await User.findOne({
+                $or: [
+                    { _id: id },
+                    { username }
+                ],
+            });
 
-        thought: async (parent, { thoughtId }) => {
-            return Thought.findOne({ _id: thoughtId });
+            if (!foundUser) {
+                // Throw an error if user is not found
+            }
+
+            return foundUser;
         },
     },
 
