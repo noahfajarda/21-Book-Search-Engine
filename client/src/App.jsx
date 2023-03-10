@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SearchBooks from "./pages/SearchBooks";
 import SavedBooks from "./pages/SavedBooks";
-import Navbar from "./components/Navbar";
+import NavBar from "./components/NavBar";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
 const client = new ApolloClient({
@@ -15,7 +15,7 @@ function App() {
         <ApolloProvider client={client}>
             <Router>
                 <>
-                    <Navbar />
+                    <NavBar />
                     <Routes>
                         <Route path="/" element={<SearchBooks />} />
                         <Route path="/saved" element={<SavedBooks />} />
